@@ -6,6 +6,12 @@ public class flip : MonoBehaviour
 {
     SpriteRenderer sprite;
     bool faceRight = true;
+
+    public GameObject Bullet;
+    GameObject bulletClone;
+
+    public Transform leftSpawn;
+    public float speed;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +22,7 @@ public class flip : MonoBehaviour
     void Update()
     {
         FlipPlayer();
+        Fire();
     }
 
     void FlipPlayer()
@@ -29,6 +36,22 @@ public class flip : MonoBehaviour
         {
             sprite.flipX = true;
             faceRight = false;
+        }
+    }
+
+    void Fire()
+    {
+        if (Input.GetMouseButtonDown(0) && faceRight)
+        {
+            bulletClone = Instantiate(Bullet, transform.position, transform.rotation);
+            bulletClone.GetComponent<Rigidbody2D>().velocity = transform.right * speed;
+            Destroy(bulletClone, 1.5f);
+        }
+        else if (Input.GetMouseButtonDown(0) && !faceRight)
+        {
+            bulletClone = Instantiate(Bullet, leftSpawn.position, leftSpawn.rotation);
+            bulletClone.GetComponent<Rigidbody2D>().velocity = transform.right * -speed;
+
         }
     }
 }
